@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+        
+        body {
+            height: 100%;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Fixed Navigation -->
+    <nav class="fixed top-0 w-full bg-white shadow-lg z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-bold text-gray-900">ModernBlog</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium active">Home</a>
+                        <a href="#about" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#blog" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Blog</a>
+                        <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Home</a>
+                <a href="#about" class="block px-3 py-2 text-gray-700 hover:text-blue-600">About</a>
+                <a href="#blog" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Blog</a>
+                <a href="#contact" class="block px-3 py-2 text-gray-700 hover:text-blue-600">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="pt-20 pb-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-gray-900 mb-6">Welcome to ModernBlog</h2>
+                    <p class="text-xl text-gray-600 max-w-3xl mx-auto">Discover insightful articles, tutorials, and stories that inspire and inform. Join our community of readers and writers.</p>
+                </div>
+                
+                <!-- Latest Posts Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start" id="posts-grid">
+                    <!-- Posts will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">About Me</h2>
+                    <div class="w-24 h-1 bg-blue-600 mx-auto"></div>
+                </div>
+                
+                <div class="flex flex-col lg:flex-row items-center gap-12">
+                    <div class="lg:w-1/3">
+                        <div class="w-64 h-64 mx-auto rounded-full overflow-hidden shadow-2xl hover-lift bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="lg:w-2/3">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-4">Sarah Johnson</h3>
+                        <p class="text-lg text-gray-600 mb-6">
+                            I'm a passionate writer and technology enthusiast with over 8 years of experience in digital marketing and content creation. I love sharing insights about web development, design trends, and the latest in tech innovation.
+                        </p>
+                        <p class="text-lg text-gray-600 mb-6">
+                            When I'm not writing, you can find me exploring new coffee shops, hiking mountain trails, or experimenting with new recipes in the kitchen. I believe that great content comes from genuine experiences and authentic storytelling.
+                        </p>
+                        <div class="flex space-x-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">Web Development</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">Design</span>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">Technology</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="py-20 bg-gray-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Latest Articles</h2>
+                    <div class="w-24 h-1 bg-blue-600 mx-auto"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start" id="all-posts-grid">
+                    <!-- All posts will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-900 mb-4">Get In Touch</h2>
+                    <div class="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+                    <p class="text-lg text-gray-600">Have a question or want to collaborate? I'd love to hear from you!</p>
+                </div>
+                
+                <div class="bg-gray-50 rounded-2xl p-8 hover-lift">
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea id="message" name="message" rows="6" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn-primary text-white px-8 py-3 rounded-lg font-medium">Send Message</button>
+                        </div>
+                    </form>
+                    <div id="form-message" class="mt-4 text-center hidden"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Individual Post View -->
+    <div id="post-view" class="hidden pt-20 pb-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <button id="back-btn" class="mb-8 inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Blog
+            </button>
+            
+            <article id="post-content" class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <!-- Post content will be dynamically inserted here -->
+            </article>
+        </div>
+    </div>
+
+    <script>
+        // Sample blog posts data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "The Future of Web Development: Trends to Watch in 2024",
+                excerpt: "Explore the latest trends shaping the web development landscape, from AI integration to progressive web apps.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">The web development landscape is constantly evolving, and 2024 promises to bring exciting new trends and technologies that will reshape how we build and interact with websites.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">AI-Powered Development Tools</h3>
+                    <p class="text-gray-600 mb-6">Artificial intelligence is revolutionizing how developers write code, debug applications, and optimize performance. From intelligent code completion to automated testing, AI tools are becoming indispensable.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Progressive Web Apps (PWAs)</h3>
+                    <p class="text-gray-600 mb-6">PWAs continue to bridge the gap between web and mobile applications, offering native-like experiences with the accessibility of web technologies.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">WebAssembly Growth</h3>
+                    <p class="text-gray-600 mb-6">WebAssembly is enabling high-performance applications in the browser, opening new possibilities for complex web applications that were previously impossible.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 15, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%23667eea'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='white' text-anchor='middle' dy='.3em'%3EWeb Development%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 2,
+                title: "Mastering CSS Grid: A Complete Guide",
+                excerpt: "Learn how to create complex, responsive layouts with CSS Grid. From basics to advanced techniques.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">CSS Grid has revolutionized how we approach layout design on the web. This comprehensive guide will take you from beginner to advanced Grid techniques.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Understanding the Grid Container</h3>
+                    <p class="text-gray-600 mb-6">The foundation of CSS Grid starts with understanding how to set up a grid container and define your grid structure using grid-template-columns and grid-template-rows.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Grid Item Placement</h3>
+                    <p class="text-gray-600 mb-6">Learn how to precisely position grid items using grid-column, grid-row, and the powerful grid-area property for complex layouts.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Responsive Grid Layouts</h3>
+                    <p class="text-gray-600 mb-6">Discover how to create responsive designs that adapt beautifully to different screen sizes using auto-fit, auto-fill, and minmax functions.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 12, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%23f093fb'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='white' text-anchor='middle' dy='.3em'%3ECSS Grid Guide%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 3,
+                title: "JavaScript ES2024: New Features You Should Know",
+                excerpt: "Discover the latest JavaScript features that will improve your code quality and development experience.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">JavaScript continues to evolve with each new ECMAScript release. ES2024 brings several exciting features that will enhance your development workflow.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Array Grouping Methods</h3>
+                    <p class="text-gray-600 mb-6">The new Object.groupBy() and Map.groupBy() methods make it easier to group array elements based on specific criteria, reducing the need for complex reduce operations.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Promise.withResolvers()</h3>
+                    <p class="text-gray-600 mb-6">This new static method provides a more convenient way to create promises with external resolve and reject functions, simplifying certain async patterns.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Temporal API Progress</h3>
+                    <p class="text-gray-600 mb-6">While still in development, the Temporal API promises to solve JavaScript's date and time handling challenges with a modern, immutable approach.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 10, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%23ffeaa7'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='%23333' text-anchor='middle' dy='.3em'%3EJavaScript ES2024%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 4,
+                title: "Building Accessible Web Applications",
+                excerpt: "Learn essential techniques for creating inclusive web experiences that work for everyone.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">Web accessibility isn't just a nice-to-have feature—it's essential for creating inclusive digital experiences that serve all users, regardless of their abilities.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Semantic HTML Foundation</h3>
+                    <p class="text-gray-600 mb-6">Using proper HTML elements and structure provides the foundation for accessibility, enabling screen readers and other assistive technologies to understand your content.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">ARIA Labels and Roles</h3>
+                    <p class="text-gray-600 mb-6">Learn when and how to use ARIA attributes to enhance the accessibility of complex interactive components that go beyond standard HTML elements.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Testing for Accessibility</h3>
+                    <p class="text-gray-600 mb-6">Discover tools and techniques for testing your applications with screen readers, keyboard navigation, and automated accessibility testing tools.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 8, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%2374b9ff'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='white' text-anchor='middle' dy='.3em'%3EWeb Accessibility%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 5,
+                title: "The Art of Responsive Design",
+                excerpt: "Master the principles of creating beautiful, functional designs that work across all devices.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">Responsive design is more than just making websites work on mobile devices—it's about creating fluid, adaptable experiences that feel natural on any screen size.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Mobile-First Approach</h3>
+                    <p class="text-gray-600 mb-6">Starting your design process with mobile constraints forces you to prioritize content and functionality, resulting in cleaner, more focused designs.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Flexible Grid Systems</h3>
+                    <p class="text-gray-600 mb-6">Learn how to create grid systems that adapt gracefully to different screen sizes using CSS Grid and Flexbox in combination.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Performance Considerations</h3>
+                    <p class="text-gray-600 mb-6">Responsive design isn't just about layout—optimizing images, fonts, and other assets for different devices is crucial for performance.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 5, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%2300b894'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='white' text-anchor='middle' dy='.3em'%3EResponsive Design%3C/text%3E%3C/svg%3E"
+            },
+            {
+                id: 6,
+                title: "Modern JavaScript Frameworks Comparison",
+                excerpt: "An in-depth comparison of React, Vue, and Angular to help you choose the right framework.",
+                content: `
+                    <p class="text-lg text-gray-600 mb-6">Choosing the right JavaScript framework can significantly impact your project's success. Let's explore the strengths and use cases of the most popular options.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">React: The Component King</h3>
+                    <p class="text-gray-600 mb-6">React's component-based architecture and vast ecosystem make it ideal for large-scale applications, though it requires additional libraries for a complete solution.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Vue: The Progressive Framework</h3>
+                    <p class="text-gray-600 mb-6">Vue offers an excellent balance of simplicity and power, with a gentle learning curve that makes it perfect for both beginners and experienced developers.</p>
+                    
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Angular: The Full Solution</h3>
+                    <p class="text-gray-600 mb-6">Angular provides a complete framework with everything built-in, making it ideal for enterprise applications that need structure and consistency.</p>
+                `,
+                author: "Sarah Johnson",
+                date: "March 3, 2024",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='250' viewBox='0 0 400 250'%3E%3Crect width='400' height='250' fill='%23fd79a8'/%3E%3Ctext x='200' y='125' font-family='Arial' font-size='16' fill='white' text-anchor='middle' dy='.3em'%3EJS Frameworks%3C/text%3E%3C/svg%3E"
+            }
+        ];
+
+        // DOM elements
+        const postsGrid = document.getElementById('posts-grid');
+        const allPostsGrid = document.getElementById('all-posts-grid');
+        const mainContent = document.getElementById('main-content');
+        const postView = document.getElementById('post-view');
+        const postContent = document.getElementById('post-content');
+        const backBtn = document.getElementById('back-btn');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const contactForm = document.getElementById('contact-form');
+        const formMessage = document.getElementById('form-message');
+
+        // Create post card HTML
+        function createPostCard(post, showReadMore = true) {
+            const cardStyles = [
+                'bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-500',
+                'bg-gradient-to-br from-purple-50 to-purple-100 border-l-4 border-purple-500',
+                'bg-gradient-to-br from-green-50 to-green-100 border-l-4 border-green-500',
+                'bg-gradient-to-br from-pink-50 to-pink-100 border-l-4 border-pink-500',
+                'bg-gradient-to-br from-yellow-50 to-yellow-100 border-l-4 border-yellow-500',
+                'bg-gradient-to-br from-indigo-50 to-indigo-100 border-l-4 border-indigo-500'
+            ];
+            
+            const cardStyle = cardStyles[(post.id - 1) % cardStyles.length];
+            
+            return `
+                <article class="${cardStyle} rounded-2xl shadow-lg overflow-hidden hover-lift fade-in h-full flex flex-col transform transition-all duration-300">
+                    <div class="relative">
+                        <img src="${post.image}" alt="${post.title}" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-full px-3 py-1 text-xs font-semibold text-gray-700">
+                            ${post.date.split(' ')[1]} ${post.date.split(' ')[2]}
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                                <span class="text-white text-xs font-bold">${post.author.split(' ').map(n => n[0]).join('')}</span>
+                            </div>
+                            <span class="text-sm font-medium text-gray-600">${post.author}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-600 transition-colors">${post.title}</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3 flex-grow leading-relaxed">${post.excerpt}</p>
+                        <div class="mt-auto">
+                            ${showReadMore ? `
+                                <button onclick="showPost(${post.id})" class="w-full btn-primary text-white px-4 py-3 rounded-lg text-sm font-medium flex items-center justify-center group">
+                                    Read Full Article
+                                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                    </svg>
+                                </button>
+                            ` : `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-500 bg-white bg-opacity-50 px-3 py-1 rounded-full">Featured Article</span>
+                                    <div class="flex space-x-1">
+                                        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                        <div class="w-2 h-2 bg-pink-400 rounded-full"></div>
+                                    </div>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        // Display latest posts on homepage
+        function displayLatestPosts() {
+            const latestPosts = blogPosts.slice(0, 6);
+            postsGrid.innerHTML = latestPosts.map(post => createPostCard(post)).join('');
+        }
+
+        // Display all posts in blog section
+        function displayAllPosts() {
+            allPostsGrid.innerHTML = blogPosts.map(post => createPostCard(post, false)).join('');
+        }
+
+        // Show individual post
+        function showPost(postId) {
+            const post = blogPosts.find(p => p.id === postId);
+            if (!post) return;
+
+            postContent.innerHTML = `
+                <div class="aspect-w-16 aspect-h-9">
+                    <img src="${post.image}" alt="${post.title}" class="w-full h-64 object-cover">
+                </div>
+                <div class="p-8">
+                    <div class="flex items-center text-sm text-gray-500 mb-4">
+                        <span>${post.author}</span>
+                        <span class="mx-2">•</span>
+                        <span>${post.date}</span>
+                    </div>
+                    <h1 class="text-4xl font-bold text-gray-900 mb-6">${post.title}</h1>
+                    <div class="prose prose-lg max-w-none">
+                        ${post.content}
+                    </div>
+                </div>
+            `;
+
+            mainContent.classList.add('hidden');
+            postView.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+
+        // Show main content (hide post view)
+        function showMainContent() {
+            postView.classList.add('hidden');
+            mainContent.classList.remove('hidden');
+        }
+
+        // Navigation functionality
+        function setupNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        showMainContent();
+                        setTimeout(() => {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                    }
+                    
+                    // Update active nav link
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Close mobile menu
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+        }
+
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Back button functionality
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showMainContent();
+        });
+
+        // Contact form functionality
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const message = formData.get('message');
+            
+            // Simulate form submission
+            formMessage.innerHTML = `
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                    <strong>Thank you, ${name}!</strong> Your message has been sent successfully. I'll get back to you soon.
+                </div>
+            `;
+            formMessage.classList.remove('hidden');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                formMessage.classList.add('hidden');
+            }, 5000);
+        });
+
+        // Initialize the blog
+        function init() {
+            displayLatestPosts();
+            displayAllPosts();
+            setupNavigation();
+        }
+
+        // Make showPost function globally available
+        window.showPost = showPost;
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98c61bc932f1fbff',t:'MTc2MDA5OTIxMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
